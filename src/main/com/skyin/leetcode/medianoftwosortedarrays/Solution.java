@@ -39,7 +39,6 @@ public class Solution {
 		int len2 = right2 - left2 + 1;
 
 		if (len1 < len2 / 2) {
-			System.out.println(String.format("cut: %d, %d", len1, len2));
 			if (len2 % 2 == 0) {
 				left2 = mid2 - len1 + 1;
 				right2 = mid2 + len1;
@@ -51,7 +50,6 @@ public class Solution {
 		}
 
 		if (len2 < len1 / 2) {
-			System.out.println(String.format("cut: %d, %d", len1, len2));
 			if (len1 % 2 == 0) {
 				left1 = mid1 - len2 + 1;
 				right1 = mid1 + len2;
@@ -67,21 +65,8 @@ public class Solution {
 			System.arraycopy(nums1, left1, array, 0, len1);
 			System.arraycopy(nums2, left2, array, len1, len2);
 			Arrays.sort(array);
-			System.out.println("sorted: " + Arrays.toString(array));
 			return findMedianSorted(array);
-		} else {
-			int[] array = new int[len1];
-			System.arraycopy(nums1, left1, array, 0, len1);
-			Arrays.sort(array);
-			System.out.println("arr1: " + Arrays.toString(array));
-			array = new int[len2];
-			System.arraycopy(nums2, left2, array, 0, len2);
-			Arrays.sort(array);
-			System.out.println("arr2: " + Arrays.toString(array));
 		}
-
-		System.out.println(String.format("asdf: %d, %d, %d, %d, (%d, %d), (%d, %d)",
-				left1, right1, left2, right2, nums1[mid1], nums2[mid2], (right1 - left1 + 1), (right2 - left2 + 1)));
 
 		int cutLen = Math.min((len1 - 1) / 2, (len2 - 1) / 2);
 		if (nums1[mid1] >= nums2[mid2]) {

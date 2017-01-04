@@ -12,16 +12,29 @@ public class Solution {
 	private List<List<Integer>> list;
 
 	public List<List<Integer>> fourSum(int[] nums, int target) {
+		list = new LinkedList<>();
+		if (nums == null || nums.length < 4) {
+			return list;
+		}
+
 		Arrays.sort(nums);
 		System.out.println(Arrays.toString(nums));
 		this.nums = nums;
-		list = new LinkedList<>();
 
-		for (int i = 0; i < nums.length - 3; i++) {
-			if (i > 0 && nums[i] == nums[i - 1]) {
+		if (4 * nums[nums.length - 1] < target) {
+			return list;
+		}
+		for (int pos0 = 0; pos0 < nums.length - 3; pos0++) {
+			if (4 * nums[pos0] > target) {
+				return list;
+			}
+			if (pos0 > 0 && nums[pos0] == nums[pos0 - 1]) {
 				continue;
 			}
-			threeSum(target - nums[i], i);
+			if (nums[pos0] + 3 * nums[nums.length - 1] < target) {
+				continue;
+			}
+			threeSum(target - nums[pos0], pos0);
 		}
 
 		return list;
@@ -29,7 +42,13 @@ public class Solution {
 
 	private void threeSum(int target, int pos0) {
 		for (int pos1 = pos0 + 1; pos1 < nums.length - 2; pos1++) {
+			if (3 * nums[pos1] > target) {
+				return;
+			}
 			if (pos1 > pos0 + 1 && nums[pos1] == nums[pos1 - 1]) {
+				continue;
+			}
+			if (nums[pos1] + 2 * nums[nums.length - 1] < target) {
 				continue;
 			}
 			int nextTarget = target - nums[pos1];
@@ -38,48 +57,28 @@ public class Solution {
 	}
 
 	private void twoSum(int target, int pos0, int pos1) {
-		for (int pos2 = pos1 + 1; pos2 < nums.length - 1; pos2++) {
-			if (pos2 > pos1 + 1 && nums[pos2] == nums[pos2 - 1]) {
-				continue;
-			}
-			int nextTarget = target - nums[pos2];
-			one(nextTarget, pos0, pos1, pos2);
-		}
-	}
-
-	private void one(int target, int pos0, int pos1, int pos2) {
-		int left = pos2 + 1;
-		int right = nums.length - 1;
-		if (left > right ||
-				nums[left] > target ||
-				nums[right] < target) {
+		int pos2 = pos1 + 1;
+		int pos3 = nums.length - 1;
+		if (2 * nums[pos2] > target || 2 * nums[pos3] < target) {
 			return;
 		}
-		int pos3 = left;
-		while (left < right - 1) {
-			pos3 = (left + right) / 2;
-			if (nums[pos3] == target) {
-				break;
-			} else if (nums[pos3] > target) {
-				right = pos3;
+		while (pos2 < pos3) {
+			int sum = nums[pos2] + nums[pos3];
+			if (sum == target) {
+				list.add(Arrays.asList(nums[pos0], nums[pos1], nums[pos2], nums[pos3]));
+				int temp = nums[pos2];
+				while (pos2 < pos3 && nums[pos2] == temp) {
+					pos2++;
+				}
+				temp = nums[pos3];
+				while (pos2 < pos3 && nums[pos3] == temp) {
+					pos3--;
+				}
+			} else if (sum > target) {
+				pos3--;
 			} else {
-				left = pos3;
+				pos2++;
 			}
-		}
-
-		if (nums[left] == target) {
-			pos3 = left;
-		}
-		if (nums[right] == target) {
-			pos3 = right;
-		}
-		if (nums[pos3] == target) {
-			List<Integer> l = new LinkedList<>();
-			l.add(nums[pos0]);
-			l.add(nums[pos1]);
-			l.add(nums[pos2]);
-			l.add(nums[pos3]);
-			list.add(l);
 		}
 	}
 

@@ -20,7 +20,7 @@ public class Solution {
 			long p = createPalindrome(n, i);
 			for (int j = (int) Math.sqrt(p); j < max; j++) {
 				long quotient = p / j;
-//				System.out.println(p + ", " + j + ", " + (p / 1.0 / j));
+//				System.out.println(c + ", " + j + ", " + (c / 1.0 / j));
 				if (quotient < min) {
 					break;
 				}
